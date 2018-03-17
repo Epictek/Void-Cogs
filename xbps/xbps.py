@@ -34,7 +34,7 @@ class xbps:
                 searchterm + 
                 "&s=indexed)")
         em = discord.Embed(title='Void Repo Search', description='\n'.join(results), colour=0x478061)
-    await self.bot.send_message(ctx.message.channel,embed=em)
+        await self.bot.send_message(ctx.message.channel,embed=em)
 
 def setup(bot):
     bot.add_cog(xbps(bot))
