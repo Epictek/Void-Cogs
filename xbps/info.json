@@ -1,0 +1,10 @@
+{
+    "AUTHOR" : "Epictek",
+    "INSTALL_MSG" : "Thank you for installing",
+    "NAME" : "xbps",
+    "SHORT" : "Search void repos",
+    "DESCRIPTION" : "Search the void repositories for packages",
+    "TAGS" : ["linux","void","voidlinux","xbps","epictek"],
+    "REQUIREMENTS" : ["BeautifulSoup","requests"],
+    "HIDDEN" : false
+}
