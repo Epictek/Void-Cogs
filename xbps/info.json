@@ -5,6 +5,6 @@
     "SHORT" : "Search void repos",
     "DESCRIPTION" : "Search the void repositories for packages",
     "TAGS" : ["linux","void","voidlinux","xbps","epictek"],
-    "REQUIREMENTS" : ["BeautifulSoup","requests"],
+    "REQUIREMENTS" : ["beautifulsoup4","requests"],
     "HIDDEN" : false
 }
