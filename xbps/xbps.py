@@ -1,7 +1,10 @@
 import discord
 from discord.ext import commands
 import requests
-from bs4 import BeautifulSoup
+import requests_cache
+import re
+
+requests_cache.install_cache()
 
 class xbps:
     """Search for packages in the Void Repos"""
@@ -10,24 +13,26 @@ class xbps:
 
     @commands.command(pass_context = True)
     async def xbps(self, ctx, searchterm, arch="x86_64"):
+        print(searchterm)
         r = requests.get("https://repo.voidlinux.eu/current/")
-        soup = BeautifulSoup(r.text, 'html.parser')
 
         results_limit = 10
         archlist = ["x86_64", "i686", "armv6l", "armv7l", "noarch"]
         if arch not in archlist:
             arch="x86_64"
         results = []
+        
+        regex = r"\"(.*" + searchterm + ".*\."  + arch + ")\.xbps\""
 
-        for link in soup.find_all('a'):
-            if ".sig" not in link.contents[0]:
-                if searchterm.lower() in link.contents[0].lower() and (arch in link.contents[0].lower() or "noarch" in link.contents[0].lower()):
-                    if len(results) <= results_limit:
-                        results.append("[" + link.contents[0][: -5] + "]" +
-                            "(https://github.com/voidlinux/void-packages/tree/master/srcpkgs/" +
-                            '-'.join(link.contents[0][: -5].split('-')[: -1]) + ")")
-                    else:
-                        break
+        matches = re.finditer(regex, r.text)
+
+        for matchNum, match in enumerate(matches):
+                matched = match.group(1)
+                if len(results) <= results_limit:
+                    results.append("[" + matched + "]" +
+                            "(https://github.com/voidlinux/void-packages/tree/master/srcpkgs/" + '-'.join(matched.split('-')[:-1]) + ")")
+                else:
+                    break
         if len(results) == 0:
             results.append("No results found.")
         results.append("―――――――――――\n[Search on github](https://github.com/voidlinux/void-packages/search?q%5B%5D=filename%3Atemplate+path%3A%2Fsrcpkgs&q%5B%5D="+
