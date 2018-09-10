@@ -2,9 +2,9 @@
     "AUTHOR" : "Epictek",
     "INSTALL_MSG" : "Thank you for installing",
     "NAME" : "xbps",
-    "SHORT" : "Search void repos",
+    "SHORT" : "Search the voidlinux repos",
     "DESCRIPTION" : "Search the void repositories for packages",
-    "TAGS" : ["linux","void","voidlinux","xbps","epictek"],
-    "REQUIREMENTS" : ["requests","requests_cache"],
+    "TAGS" : ["linux","void","voidlinux","xbps","epictek","package","search"],
+    "REQUIREMENTS" : ["requests"],
     "HIDDEN" : false
 }

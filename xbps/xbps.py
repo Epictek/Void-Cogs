@@ -1,10 +1,8 @@
 import discord
-from discord.ext import commands
+from redbot.core import commands
 import requests
-import requests_cache
 import re
-
-requests_cache.install_cache()
+from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 class xbps:
     """Search for packages in the Void Repos"""
@@ -21,23 +19,27 @@ class xbps:
         if arch not in archlist:
             arch="x86_64"
 
-        r = requests.get("https://xbps.spiff.io/v1/query/{}?q={}".format(archlist, searchterm))
-        links = ""
-        for package in r.json().["data"]:
-            print(package)
-            if len(links) <= results_limit:
-                links.append("[" + package["name"] + package["version"] + "_" + packge["revision"] +"]" +
-                               "(https://github.com/voidlinux/void-packages/tree/master/srcpkgs/"
-                               + package["name"] + ")")
-            else:
-                break
-        if len(results) == 0:
-            links.append("No results found.")
-        links.append("―――――――――――\n[Search on github](https://github.com/voidlinux/void-packages/search?q%5B%5D=filename%3Atemplate+path%3A%2Fsrcpkgs&q%5B%5D="+
-                searchterm + 
-                "&s=indexed)")
-        em = discord.Embed(title='Void Repo Search', description='\n'.join(links), colour=0x478061)
-        await ctx.send(embed=em)
+        print(searchterm)
+        urlterm = searchterm.replace(' ', '+')
+        r = requests.get("https://xbps.spiff.io/v1/query/{}?q={}".format(arch, urlterm))
+        links = []
+        length = 0
+        embeds = []
+        for package in r.json()["data"]:
+            packageString =("[" + package["name"] + " " + str(package["version"]) + "_" + str(package["revision"]) +"]" +
+                            "(https://github.com/void-linux/void-packages/tree/master/srcpkgs/"
+                            + package["name"] + ") - " + package["desc"])
+            if len(packageString) + length < 2000:
+                links.append(packageString)
+                length += len(packageString)
+            else: 
+                em = discord.Embed(title='Void Repo Search: ' + searchterm , url="https://github.com/void-linux/void-packages/search?q%5B%5D=filename%3Atemplate+path%3A%2Fsrcpkgs&q%5B%5D=" + urlterm + "&s=indexed)" ,description='\n'.join(links), colour=0x478061)
+                em.set_footer(text="Search results from https://xbps.spiff.io", icon_url="https://voidlinux.org/assets/img/void_bg.png")
+                embeds.append(em)
+                links = []
+                length = 0
+        print(embeds)
+        await menu(ctx, pages=embeds, controls=DEFAULT_CONTROLS)
 
 def setup(bot):
     bot.add_cog(xbps(bot))
