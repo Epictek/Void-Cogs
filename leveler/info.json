@@ -1,0 +1,10 @@
+{
+    "AUTHOR" : "Epictek",
+    "INSTALL_MSG" : "Thank you for installing",
+    "NAME" : "leveler",
+    "SHORT" : "Leveling System",
+    "DESCRIPTION" : "Leveling System",
+    "TAGS" : ["leveling","epictek"],
+    "REQUIREMENTS" : [],
+    "HIDDEN" : false
+}
