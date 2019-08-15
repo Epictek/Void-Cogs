@@ -21,7 +21,7 @@ class xbps:
 
         print(searchterm)
         urlterm = searchterm.replace(' ', '+')
-        r = requests.get("https://xbps.spiff.io/v1/query/{}?q={}".format(arch, urlterm))
+        r = requests.get("http://steinscraft.net:8197/v1/query/{}?q={}".format(arch, urlterm))
         links = []
         length = 0
         embeds = []
